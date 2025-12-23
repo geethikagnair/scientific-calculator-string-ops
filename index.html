@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Scientific Calculator & String Operations</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #1e1e2f;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.container {
+    background: #2a2a3d;
+    padding: 20px;
+    border-radius: 10px;
+    width: 380px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 12px;
+    border-radius: 5px;
+    border: none;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+button {
+    padding: 12px;
+    font-size: 14px;
+    background: #3c3c5c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #5a5a8a;
+}
+
+.mode-btn {
+    margin-top: 12px;
+    width: 100%;
+    background: #ff9800;
+    font-weight: bold;
+}
+
+.string-section {
+    display: none;
+}
+
+.string-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.result {
+    margin-top: 12px;
+    padding: 8px;
+    background: #1e1e2f;
+    border-radius: 6px;
+    font-size: 14px;
+    min-height: 40px;
+    white-space: pre-wrap;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h2 id="title">Scientific Calculator</h2>
+
+<div id="calculator">
+    <input type="text" id="display" readonly>
+
+    <div class="buttons">
+        <button onclick="clearDisplay()">C</button>
+        <button onclick="backspace()">⌫</button>
+        <button onclick="append('(')">(</button>
+        <button onclick="append(')')">)</button>
+
+        <button onclick="append('7')">7</button>
+        <button onclick="append('8')">8</button>
+        <button onclick="append('9')">9</button>
+        <button onclick="append('/')">÷</button>
+
+        <button onclick="append('4')">4</button>
+        <button onclick="append('5')">5</button>
+        <button onclick="append('6')">6</button>
+        <button onclick="append('*')">×</button>
+
+        <button onclick="append('1')">1</button>
+        <button onclick="append('2')">2</button>
+        <button onclick="append('3')">3</button>
+        <button onclick="append('-')">−</button>
+
+        <button onclick="append('0')">0</button>
+        <button onclick="append('.')">.</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="append('+')">+</button>
+
+        <button onclick="append('Math.sin(')">sin</button>
+        <button onclick="append('Math.cos(')">cos</button>
+        <button onclick="append('Math.tan(')">tan</button>
+        <button onclick="append('Math.log10(')">log</button>
+
+        <button onclick="append('Math.sqrt(')">√</button>
+        <button onclick="append('**')">xʸ</button>
+    </div>
+</div>
+
+<div id="stringOps" class="string-section">
+    <input type="text" id="stringInput" placeholder="Enter a string">
+
+    <div class="string-buttons">
+        <button onclick="toUpper()">Uppercase</button>
+        <button onclick="toLower()">Lowercase</button>
+        <button onclick="reverseString()">Reverse</button>
+
+        <button onclick="stringLength()">Length</button>
+        <button onclick="checkPalindrome()">Palindrome</button>
+        <button onclick="removeSpaces()">Remove Spaces</button>
+
+        <button onclick="countWords()">Word Count</button>
+        <button onclick="countVowels()">Vowels</button>
+        <button onclick="countConsonants()">Consonants</button>
+
+        <button onclick="countDigits()">Digits</button>
+        <button onclick="countSpecial()">Special</button>
+        <button onclick="capitalizeWords()">Capitalize</button>
+
+        <button onclick="toggleCase()">Toggle Case</button>
+        <button onclick="replaceWord()">Replace</button>
+        <button onclick="removeDuplicates()">No Duplicates</button>
+
+        <button onclick="firstChar()">First Char</button>
+        <button onclick="lastChar()">Last Char</button>
+        <button onclick="substringExtract()">Substring</button>
+
+        <button onclick="startsWithCheck()">Starts With</button>
+        <button onclick="endsWithCheck()">Ends With</button>
+        <button onclick="checkAnagram()">Anagram</button>
+
+        <button onclick="charFrequency()">Char Frequency</button>
+    </div>
+
+    <div class="result" id="stringResult"></div>
+</div>
+
+<button class="mode-btn" onclick="toggleMode()">String Operations</button>
+</div>
+
+<script>
+let isCalculator = true;
+const display = document.getElementById("display");
+
+function append(v){ display.value += v; }
+function clearDisplay(){ display.value = ""; }
+function backspace(){ display.value = display.value.slice(0,-1); }
+function calculate(){
+    try{ display.value = eval(display.value); }
+    catch{ alert("Invalid Expression"); }
+}
+
+function toggleMode(){
+    isCalculator = !isCalculator;
+    calculator.style.display = isCalculator ? "block" : "none";
+    stringOps.style.display = isCalculator ? "none" : "block";
+    title.innerText = isCalculator ? "Scientific Calculator" : "String Operations";
+}
+
+const stringInput = document.getElementById("stringInput");
+const stringResult = document.getElementById("stringResult");
+
+function toUpper(){ stringResult.innerText = stringInput.value.toUpperCase(); }
+function toLower(){ stringResult.innerText = stringInput.value.toLowerCase(); }
+function reverseString(){ stringResult.innerText = [...stringInput.value].reverse().join(""); }
+function stringLength(){ stringResult.innerText = "Length: " + stringInput.value.length; }
+
+function checkPalindrome(){
+    let s = stringInput.value;
+    stringResult.innerText = s === [...s].reverse().join("") ? "Palindrome" : "Not Palindrome";
+}
+
+function removeSpaces(){ stringResult.innerText = stringInput.value.replace(/\s+/g,""); }
+function countWords(){
+    let t = stringInput.value.trim();
+    stringResult.innerText = "Words: " + (t ? t.split(/\s+/).length : 0);
+}
+function countVowels(){ stringResult.innerText = "Vowels: " + (stringInput.value.match(/[aeiou]/gi)||[]).length; }
+function countConsonants(){ stringResult.innerText = "Consonants: " + (stringInput.value.match(/[bcdfghjklmnpqrstvwxyz]/gi)||[]).length; }
+function countDigits(){ stringResult.innerText = "Digits: " + (stringInput.value.match(/\d/g)||[]).length; }
+function countSpecial(){ stringResult.innerText = "Special: " + (stringInput.value.match(/[^a-zA-Z0-9\s]/g)||[]).length; }
+
+function capitalizeWords(){
+    stringResult.innerText = stringInput.value.toLowerCase()
+        .split(" ").map(w => w.charAt(0).toUpperCase()+w.slice(1)).join(" ");
+}
+
+function toggleCase(){
+    stringResult.innerText = [...stringInput.value]
+        .map(c => c===c.toUpperCase()?c.toLowerCase():c.toUpperCase()).join("");
+}
+
+function replaceWord(){
+    let a = prompt("Replace:");
+    let b = prompt("With:");
+    if(a && b) stringResult.innerText = stringInput.value.replaceAll(a,b);
+}
+
+function removeDuplicates(){
+    stringResult.innerText = [...new Set(stringInput.value)].join("");
+}
+
+function firstChar(){ stringResult.innerText = "First: " + stringInput.value.charAt(0); }
+function lastChar(){ stringResult.innerText = "Last: " + stringInput.value.slice(-1); }
+
+function substringExtract(){
+    let s = prompt("Start index:");
+    let e = prompt("End index:");
+    stringResult.innerText = stringInput.value.substring(s,e);
+}
+
+function startsWithCheck(){
+    let w = prompt("Starts with?");
+    stringResult.innerText = stringInput.value.startsWith(w) ? "Yes" : "No";
+}
+
+function endsWithCheck(){
+    let w = prompt("Ends with?");
+    stringResult.innerText = stringInput.value.endsWith(w) ? "Yes" : "No";
+}
+
+function checkAnagram(){
+    let s1 = stringInput.value.replace(/\s/g,"").toLowerCase();
+    let s2 = prompt("Second string:").replace(/\s/g,"").toLowerCase();
+    stringResult.innerText =
+        s1.split("").sort().join("") === s2.split("").sort().join("")
+        ? "Anagram" : "Not Anagram";
+}
+
+function charFrequency(){
+    let f = {};
+    for(let c of stringInput.value) f[c] = (f[c]||0)+1;
+    stringResult.innerText = JSON.stringify(f,null,2);
+}
+</script>
+
+</body>
+</html>
